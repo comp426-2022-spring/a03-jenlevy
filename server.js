@@ -72,10 +72,9 @@ function countFlips(array) {
     return {"heads" : heads, "tails": tails}
 }
 
-const server = app.listen(port, () => {
-    console.log('App is running on port %PORT%'.replace('%PORT%', port))
-}
-)
+const server = app.listen(HTTP_PORT, () => {
+    console.log('App listening on port %PORT%'.replace('%PORT%',HTTP_PORT))
+});
 
 //default check endpoint
 app.get('/app/', (req, res) => {
@@ -92,14 +91,14 @@ app.get('/app/flip', (req, res) => {
     var resStatusCode = 200
     var result = coinFlip()
 
-    res.status(resStatusCode).json({"flip": result})
+    res.status(200).json({"flip": result})
     });
 
 //flips endpoint (many flips)
 app.get('/app/flips/:number/', (req, res) => {
     var resStatusCode = 200
 
-    res.status(resStatusCode).json({})
+    res.status(200).json({})
     });
 
 //flip while calling heads endpoing
