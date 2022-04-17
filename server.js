@@ -1,10 +1,11 @@
 
 const express = require('express')
+const { count } = require('yargs')
 const app = express()
 
 const args = require('minimist')(process.argv.slice(2))
 args["port"]
-var port = args.port || 5000
+var port = args.port || 5000 || process.env.PORT
 
 // one random coin flip
 function coinFlip() {
@@ -72,8 +73,8 @@ function countFlips(array) {
     return {"heads" : heads, "tails": tails}
 }
 
-const server = app.listen(HTTP_PORT, () => {
-    console.log('App listening on port %PORT%'.replace('%PORT%',HTTP_PORT))
+const server = app.listen(port, () => {
+    console.log('App listening on port %PORT%'.replace('%PORT%',port))
 });
 
 //default check endpoint
@@ -88,31 +89,33 @@ app.get('/app/', (req, res) => {
 
 //flip endpoint (one flip)
 app.get('/app/flip', (req, res) => {
-    var resStatusCode = 200
-    var result = coinFlip()
-
+    
+    const result = coinFlip()
     res.status(200).json({"flip": result})
+
     });
 
 //flips endpoint (many flips)
-app.get('/app/flips/:number/', (req, res) => {
-    var resStatusCode = 200
+app.get('/app/flips/:number', (req, res) => {
+    
+    const results = coinFlips(req.params.number)
+    const summary = countFlips(results)
+    res.status(200).json({"raw": results})
 
-    res.status(200).json({})
     });
 
 //flip while calling heads endpoing
 app.get('/app/flip/call/heads', (req, res) => {
     var resStatusCode = 200
 
-    res.status(resStatusCode).json({})
+    res.status(200).json(flipACoin("heads"))
     });
 
 //flip while calling tails endpoint
 app.get('/app/flip/call/tails', (req, res) => {
     var resStatusCode = 200
 
-    res.status(resStatusCode).json({})
+    res.status(200).json(flipACoin("tails"))
     });
 
 //default error message
