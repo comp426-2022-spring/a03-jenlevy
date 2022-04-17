@@ -100,7 +100,7 @@ app.get('/app/flips/:number', (req, res) => {
     
     const results = coinFlips(req.params.number)
     const summary = countFlips(results)
-    res.status(200).json({"raw": results, "summar": summary})
+    res.status(200).json({"raw": results, "summary": summary})
 
     });
 
