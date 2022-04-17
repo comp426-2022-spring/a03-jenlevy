@@ -77,13 +77,6 @@ const server = app.listen(port, () => {
 }
 )
 
-//default error message
-app.use(function(req,res){
-    res.status(404).send("endpoint does not Exist")
-    res.type("text/plain")
-}
-)
-
 //default check endpoint
 app.get('/app/', (req, res) => {
     // Respond with status 200
@@ -123,3 +116,9 @@ app.get('/app/flip/call/tails', (req, res) => {
     res.status(resStatusCode).json({})
     });
 
+//default error message
+app.use(function(req,res){
+    res.status(404).send("endpoint does not Exist")
+    res.type("text/plain")
+}
+)
